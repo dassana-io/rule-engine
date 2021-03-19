@@ -1,0 +1,14 @@
+name: Verifies that the required labels are present
+on:
+  pull_request:
+    types: [labeled, unlabeled ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: jesusvasquez333/verify-pr-label-action@v1.3.1
+        with:
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
+          valid-labels: 'bug, enhancement, chore , feature'
