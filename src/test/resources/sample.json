@@ -1,0 +1,18 @@
+{
+  "emptyString": "",
+  "emptyObject": {},
+  "applicationArea": 9.0,
+  "landUseCodes": "GH,GX",
+  "status": "approved",
+  "organic": false,
+  "options": [
+    {
+      "code": "AB1",
+      "area": 3
+    },
+    {
+      "code": "AB8",
+      "area": 2
+    }
+  ]
+}
