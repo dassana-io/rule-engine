@@ -21,6 +21,6 @@ jobs:
           java-version: 1.11
 
       - name: Publish JAR
-        run: mvn clean test
+        run: mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn clean test
 
 

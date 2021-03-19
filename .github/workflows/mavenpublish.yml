@@ -1,8 +1,7 @@
-name: Maven Package
+name: Maven Publish Release
 on:
-  push:
-    branches:
-      - release
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -23,7 +22,7 @@ jobs:
           git config user.name "GitHub Actions"
 
       - name: Publish JAR
-        run: mvn -B release:prepare release:perform
+        run: mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B release:prepare release:perform
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
