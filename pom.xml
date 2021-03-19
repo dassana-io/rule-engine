@@ -78,5 +78,8 @@
 
     </plugins>
   </build>
+  <scm>
+    <developerConnection>scm:git:https://github.com/dassana-io/rule-engine</developerConnection>
+  </scm>
 
 </project>
