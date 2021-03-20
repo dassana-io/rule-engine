@@ -33,7 +33,10 @@ jobs:
 
           current_tag=$(git describe --abbrev=0 --tags)
           mvn versions:set -DnewVersion=$current_tag
-          mvn deploy -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+
+          mvn deploy -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
+          -Darguments="-DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+
 
           mvn -B -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
           -Darguments="-DskipTests -Dmaven.javadoc.skip=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.deploy.skip=true -Dmaven.javadoc.skip=true" \
@@ -43,12 +46,19 @@ jobs:
           release:update-versions
 
           git add pom.xml
-          git commit -m '[ci skip] setting new version after release'
-          git push
-
+          git commit -m 'setting new version after release'
 
         env:
           SSH_PRIVATE_KEY: ${{ secrets.MAVEN_SSH_PRIVATE_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          delete-branch: true
+          labels: |
+            autogen
+            infra
 
