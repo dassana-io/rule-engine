@@ -33,6 +33,7 @@ jobs:
           mvn -B -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
           -Darguments="-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.deploy.skip=true" \
           -DreleaseVersion=$current_tag \
+          -Dtag=$current_tag \
           -DdevelopmentVersion=$current_tag-SNAPSHOT \
           release:prepare
 

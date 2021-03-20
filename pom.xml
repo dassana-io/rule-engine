@@ -6,7 +6,7 @@
 
   <groupId>app.dassana.common</groupId>
   <artifactId>rule-engine</artifactId>
-  <version>v1.0.4-SNAPSHOT</version>
+  <version>1.0.12-SNAPSHOT</version>
 
   <packaging>jar</packaging>
 
