@@ -6,7 +6,7 @@
 
   <groupId>app.dassana.common</groupId>
   <artifactId>rule-engine</artifactId>
-  <version>1.3-SNAPSHOT</version>
+  <version>1.3</version>
   <packaging>jar</packaging>
 
   <!-- this project is fork of https://github.com/stevenalexander/rules-evaluator -->
@@ -87,7 +87,7 @@
     <connection>scm:git:${project.scm.url}</connection>
     <developerConnection>scm:git:${project.scm.url}</developerConnection>
     <url>https://github.com/dassana-io/rule-engine.git</url>
-    <tag>HEAD</tag>
+    <tag>rule-engine-1.3</tag>
   </scm>
 
 </project>
