@@ -32,7 +32,7 @@ jobs:
           
 
           current_tag=$(git describe --abbrev=0 --tags)
-          mvn versions:set -DnewVersion=$current_tag
+          mvn versions:set -DnewVersion=$current_tag -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
           mvn deploy -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
           -Darguments="-DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
