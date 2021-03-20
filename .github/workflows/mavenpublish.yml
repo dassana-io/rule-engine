@@ -1,30 +1,29 @@
-name: Maven Publish Release
+name: release version
+
 on:
-  release:
-    types: [ published ]
+  push:
+    branches:
+      - main
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Build and Test
+        uses: qcastel/github-actions-maven-cmd@master
         with:
-          ref: main
+          maven-args: "clean install -Ddockerfile.skip -DdockerCompose.skip -Djib.skip -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
-      - name: Set up JDK 1.11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.11
-
-      - name: Configure Git user
-        run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
-
-      - name: Publish JAR
-        run: mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B release:prepare release:perform
+      - name: Release
+        uses: qcastel/github-actions-maven-release@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
+        with:
+          git-release-bot-name: "release bot"
+          git-release-bot-email: "foo@bar.com"
+          maven-args: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.javadoc.skip=true -DskipTests -DskipITs -Dmaven.deploy.skip=true"
 
