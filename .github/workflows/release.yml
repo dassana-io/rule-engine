@@ -32,7 +32,8 @@ jobs:
           
 
           current_tag=$(git describe --abbrev=0 --tags)
-          mvn versions:set -DnewVersion=$current_tag -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          mvn versions:set -DnewVersion=$current_tag -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
+          -Darguments="-DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
           mvn deploy -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
           -Darguments="-DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
@@ -46,7 +47,7 @@ jobs:
           release:update-versions
 
           git add pom.xml
-          git commit -m 'setting new version after release'
+          git commit -m '[ci skip] setting new version after release'
 
         env:
           SSH_PRIVATE_KEY: ${{ secrets.MAVEN_SSH_PRIVATE_KEY }}
