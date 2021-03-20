@@ -26,4 +26,5 @@ jobs:
           git-release-bot-name: "release bot"
           git-release-bot-email: "foo@bar.com"
           maven-args: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.javadoc.skip=true -DskipTests -DskipITs -Dmaven.deploy.skip=true"
+          release-branch-name: "main"
 
