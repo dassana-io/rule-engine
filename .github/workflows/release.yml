@@ -27,13 +27,13 @@ jobs:
           git checkout main
           git pull
           git fetch --tags
-          current_tag=$(git tag | tail -1)
+          current_tag=$(git tag | head -1)
           git tag -d $current_tag
           git push --delete origin $current_tag
 
           echo "Maven prepare begin"
           mvn -B -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
-          -Darguments="-DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.deploy.skip=true -Dmaven.javadoc.skip=true" \
+          -Darguments="-DskipTests -Dmaven.javadoc.skip=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.deploy.skip=true -Dmaven.javadoc.skip=true" \
           -DreleaseVersion=$current_tag \
           -Dtag=$current_tag \
           -DdevelopmentVersion=$current_tag-SNAPSHOT \
@@ -41,7 +41,7 @@ jobs:
 
           echo "Maven release begin"
           mvn -B -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
-          -Darguments="-DskipTests -Dmaven.javadoc.skip=true" -Darguments="-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.javadoc.skip=true" \
+          -Darguments="-DskipTests -Dmaven.javadoc.skip=true -Dmaven.javadoc.skip=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.javadoc.skip=true" \
           release:perform
         env:
           SSH_PRIVATE_KEY: ${{ secrets.MAVEN_SSH_PRIVATE_KEY }}
