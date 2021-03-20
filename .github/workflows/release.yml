@@ -24,7 +24,7 @@ jobs:
           git config --global user.email "foo@bar.com"
           git config --global user.name "Maven Release"
           git fetch main
-          git checkout main
+          git checkout origin main
           git pull
           echo "Maven prepare begin"
           mvn -B -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Darguments="-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.deploy.skip=true"  release:prepare
