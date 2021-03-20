@@ -16,7 +16,7 @@ jobs:
       - name: Build and Test
         uses: qcastel/github-actions-maven-cmd@master
         with:
-          maven-args: "clean install -Ddockerfile.skip -DdockerCompose.skip -Djib.skip -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+          maven-args: "clean install -DskipTests  -Ddockerfile.skip -DdockerCompose.skip -Djib.skip -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
       - name: Release
         uses: qcastel/github-actions-maven-release@master
