@@ -32,8 +32,9 @@ jobs:
           
 
           current_tag=$(git describe --abbrev=0 --tags)
+          mvn versions:set -DnewVersion=$current_tag
+          mvn deploy -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
-          echo "Maven prepare begin"
           mvn -B -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
           -Darguments="-DskipTests -Dmaven.javadoc.skip=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.deploy.skip=true -Dmaven.javadoc.skip=true" \
           -DreleaseVersion=$current_tag \
@@ -41,10 +42,11 @@ jobs:
           -DdevelopmentVersion=$current_tag-SNAPSHOT \
           release:update-versions
 
-          echo "Maven release begin"
-          mvn -B -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
-          -Darguments="-DskipTests -Dmaven.javadoc.skip=true -Dmaven.javadoc.skip=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.javadoc.skip=true" \
-          release:perform
+          git add pom.xml
+          git commit -m '[ci skip] setting new version after release'
+          git push
+
+
         env:
           SSH_PRIVATE_KEY: ${{ secrets.MAVEN_SSH_PRIVATE_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
