@@ -21,8 +21,10 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
-          mvn -B release:prepare -Darguments="-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-          mvn -B release:perform -Darguments="-Dmaven.javadoc.skip=true"
+          git config --global user.email "foo@bar.com"
+          git config --global user.name "Maven Release"
+          mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Darguments="-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn" release:prepare
+          mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Darguments="-Dmaven.javadoc.skip=true" release:perform
         env:
           SSH_PRIVATE_KEY: ${{ secrets.MAVEN_SSH_PRIVATE_KEY }}
 
