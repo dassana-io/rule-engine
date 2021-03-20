@@ -6,7 +6,7 @@
 
   <groupId>app.dassana.common</groupId>
   <artifactId>rule-engine</artifactId>
-  <version>v1.0.4-SNAPSHOT</version>
+  <version>v1.0.3</version>
 
   <packaging>jar</packaging>
 
@@ -88,7 +88,7 @@
     <connection>scm:git:${project.scm.url}</connection>
     <developerConnection>scm:git:${project.scm.url}</developerConnection>
     <url>git@github.com:dassana-io/rule-engine.git</url>
-    <tag>v1.0.4</tag>
+    <tag>v1.0.3</tag>
   </scm>
 
 </project>
