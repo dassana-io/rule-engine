@@ -11,6 +11,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: 'main'
       - name: Set up JDK 1.11
         uses: actions/setup-java@v1
         with:
@@ -21,13 +23,9 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 0600 ~/.ssh/id_rsa
-          git config --global user.email "foo@bar.com"
-          git config --global user.name "Maven Release"
-          git fetch origin main
-          git checkout main
-          git pull
-          git fetch --tags
-          current_tag=$(git tag | head -1)
+
+          #delete the current tag and maven is going to tag it (and there is no way to tell maven release to not tag it)
+          current_tag=$(git describe --abbrev=0 --tags)
           git tag -d $current_tag
           git push --delete origin $current_tag
 
