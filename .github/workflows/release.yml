@@ -19,6 +19,7 @@ jobs:
 
       - name: maven package release
         run: |
+          mkdir -p ~/.ssh
           echo $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
           mvn -B release:prepare -Darguments="-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
           mvn -B release:perform -Darguments="-Dmaven.javadoc.skip=true"
