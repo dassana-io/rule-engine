@@ -2,15 +2,24 @@ package app.dassana.ruleengine.grammar.specification;
 
 import app.dassana.ruleengine.IJsonPathParser;
 
-public class NotSpecification extends CompositeSpecification {
-    ISpecification specification;
+public class NotSpecification extends AbstractSpecification {
 
-    public NotSpecification(IJsonPathParser jsonPathParser, ISpecification specification)  {
-        super(jsonPathParser);
-        this.specification = specification;
-    }
+  ISpecification specification;
 
-    public boolean isSatisfiedBy(String jsonData)   {
-        return !this.specification.isSatisfiedBy(jsonData);
-    }
+  public NotSpecification(IJsonPathParser jsonPathParser, String jsonPathExpression,
+      String value) {
+    super(jsonPathParser, jsonPathExpression, value);
+  }
+
+  public ISpecification getSpecification() {
+    return specification;
+  }
+
+  public void setSpecification(ISpecification specification) {
+    this.specification = specification;
+  }
+
+  public boolean isSatisfiedBy(String jsonData) {
+    return !this.specification.isSatisfiedBy(jsonData);
+  }
 }

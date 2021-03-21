@@ -34,7 +34,19 @@ public class GrammarTest {
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][]{
         /* Valid rules. */
-        {true, "emptyString is not empty", false},
+        {true, "(status contains foo) or (status contains bar or (status contains approved) ) ", true},
+        {true, "status contains app", true},
+        {true, "status contains app and status contains foo and status contains x", false},
+        {true, "not not not status contains foo", true},
+        {true, "not not not status contains foo and status contains app", true},
+        {true, "applicationArea greater than 9.1", true},
+        {true, "number greater than 1", true},
+        {true, "negativeNumber greater than 1", false},
+        {true, "foo does not exist", true},
+        {true, "foo exists", false},
+        {true, "negativeNumber exists", true}
+
+/*        {true, "emptyString is not empty", false},
         {true, "emptyObject is not empty", false},
         {true, "applicationArea is not empty", true},
         {true, "options is not empty", true},
@@ -92,7 +104,7 @@ public class GrammarTest {
            {true, "(4 + 2) less than (1 + 8)", true},
            {true, "(4 + 2) less than 9", true},
            {true, "6 less than (1 + 8)", true},
-           {true, "6 less than 9", true},
+           {true, "6 less than 9", true},*/
 
         //Invalid rules.
         /* {false, "", false} // empty rule*/
