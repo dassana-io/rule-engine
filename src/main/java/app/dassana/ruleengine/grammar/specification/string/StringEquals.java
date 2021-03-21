@@ -1,8 +1,9 @@
 package app.dassana.ruleengine.grammar.specification.string;
 
 import app.dassana.ruleengine.IJsonPathParser;
+import app.dassana.ruleengine.grammar.specification.AbstractSpecification;
 
-public class StringEquals extends StringSpecificationExpression {
+public class StringEquals extends AbstractSpecification {
 
     public StringEquals(IJsonPathParser jsonPathParser, String jsonPathExpression , String value) {
         super(jsonPathParser, jsonPathExpression , value);

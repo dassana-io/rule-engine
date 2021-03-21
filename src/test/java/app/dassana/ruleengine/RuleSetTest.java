@@ -1,20 +1,21 @@
 package app.dassana.ruleengine;
 
-import app.dassana.ruleengine.grammar.specification.CompositeSpecification;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import app.dassana.ruleengine.grammar.IRuleSet;
 import app.dassana.ruleengine.grammar.RuleSet;
+import app.dassana.ruleengine.grammar.specification.AbstractSpecification;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
-
 public class RuleSetTest {
 
-    CompositeSpecification ruleReturnsTrue = mock(CompositeSpecification.class);
-    CompositeSpecification ruleReturnsFalse = mock(CompositeSpecification.class);
-    CompositeSpecification ruleAlsoReturnsTrue = mock(CompositeSpecification.class);
+    AbstractSpecification ruleReturnsTrue = mock(AbstractSpecification.class);
+    AbstractSpecification ruleReturnsFalse = mock(AbstractSpecification.class);
+    AbstractSpecification ruleAlsoReturnsTrue = mock(AbstractSpecification.class);
 
     @Before
     public void setup() {

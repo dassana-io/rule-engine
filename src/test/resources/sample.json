@@ -1,7 +1,9 @@
 {
   "emptyString": "",
   "emptyObject": {},
-  "applicationArea": 9.0,
+  "applicationArea": 9.2,
+  "number": 42,
+  "negativeNumber": -42,
   "landUseCodes": "GH,GX",
   "status": "approved",
   "organic": false,

@@ -22,6 +22,11 @@ jobs:
           java-version: 1.11
 
       - name: Run unit tests
-        run: mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn clean test
+        run: mvn -B --no-transfer-progress clean test
 
 
+    - uses: codecov/codecov-action@v1
+      with:
+        file: target/site/jacoco/jacoco.xml
+        name: codecov
+        token: ${{ secrets.CODECOV_TOKEN }}
