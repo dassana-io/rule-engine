@@ -24,9 +24,8 @@ jobs:
       - name: Run unit tests
         run: mvn -B --no-transfer-progress clean test
 
-
-    - uses: codecov/codecov-action@v1
-      with:
-        file: target/site/jacoco/jacoco.xml
-        name: codecov
-        token: ${{ secrets.CODECOV_TOKEN }}
+      - uses: codecov/codecov-action@v1
+        with:
+          file: target/site/jacoco/jacoco.xml
+          name: codecov
+          token: ${{ secrets.CODECOV_TOKEN }}
