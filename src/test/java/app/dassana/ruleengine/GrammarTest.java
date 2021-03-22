@@ -34,7 +34,7 @@ public class GrammarTest {
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][]{
         /* Valid rules. */
-        {true, "(status contains foo) or (status contains bar or (status contains approved) ) ", true},
+        {true, "(status contains foo) or (status contains bar or (status contains app) ) ", true},
         {true, "status contains app", true},
         {true, "status contains app and status contains foo and status contains x", false},
         {true, "not not not status contains foo", true},
@@ -44,7 +44,9 @@ public class GrammarTest {
         {true, "negativeNumber greater than 1", false},
         {true, "foo does not exist", true},
         {true, "foo exists", false},
-        {true, "negativeNumber exists", true}
+        {true, "negativeNumber exists", true},
+        {true, "status is approved", true},
+        {true, "status is foo", false}
 
 /*        {true, "emptyString is not empty", false},
         {true, "emptyObject is not empty", false},
