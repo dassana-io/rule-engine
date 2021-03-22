@@ -37,6 +37,7 @@ number_operators: 'greater than' #NumberGreaterThanOperator
 ;
 
 string_operators: 'contains' #StringContainsExpression
+                | 'is'       #StringEqualsOperator
                 ;
 
 json_path : jsonpath_expr

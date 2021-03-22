@@ -9,6 +9,7 @@ import app.dassana.ruleengine.grammar.specification.NotSpecification;
 import app.dassana.ruleengine.grammar.specification.OrSpecification;
 import app.dassana.ruleengine.grammar.specification.numeric.GreaterThan;
 import app.dassana.ruleengine.grammar.specification.string.StringContains;
+import app.dassana.ruleengine.grammar.specification.string.StringEquals;
 import app.dassana.rules.RuleSetBaseListener;
 import app.dassana.rules.RuleSetParser;
 import app.dassana.rules.RuleSetParser.DoesNotExistOperatorContext;
@@ -19,13 +20,16 @@ import app.dassana.rules.RuleSetParser.LogicalExpressionNotContext;
 import app.dassana.rules.RuleSetParser.NumberGreaterThanOperatorContext;
 import app.dassana.rules.RuleSetParser.ParenExpressionContext;
 import app.dassana.rules.RuleSetParser.StringContainsExpressionContext;
+import app.dassana.rules.RuleSetParser.StringEqualsOperatorContext;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 public class RuleSetTreeBuilder extends RuleSetBaseListener {
 
   private final Stack<AbstractSpecification> specifications = new Stack<>();
+  private final Stack<ParserRuleContext> operatorContextStack = new Stack<>();
 
   protected IJsonPathParser jsonPathParser;
   private RuleSet ruleSet = null;
@@ -87,13 +91,18 @@ public class RuleSetTreeBuilder extends RuleSetBaseListener {
 
     String path = ctx.getChild(0).getText();
     String value = ctx.getChild(2).getText();
-    AbstractSpecification abstractSpecification = specifications.pop();
 
-    if (abstractSpecification instanceof StringContains) {
+
+    ParserRuleContext parserRuleContext = operatorContextStack.pop();
+
+    if (parserRuleContext instanceof StringContainsExpressionContext) {
       this.specifications.push(new StringContains(jsonPathParser, path, value));
     }
-    if (abstractSpecification instanceof GreaterThan) {
+    if (parserRuleContext instanceof NumberGreaterThanOperatorContext) {
       this.specifications.push(new GreaterThan(jsonPathParser, path, value));
+    }
+    if(parserRuleContext instanceof StringEqualsOperatorContext){
+      this.specifications.push(new StringEquals(jsonPathParser, path, value));
     }
 
 
@@ -105,27 +114,32 @@ public class RuleSetTreeBuilder extends RuleSetBaseListener {
   }
 
   @Override
+  public void exitStringEqualsOperator(StringEqualsOperatorContext ctx) {
+    operatorContextStack.push(ctx);
+  }
+
+  @Override
   public void exitGenericJsonPathCondition(GenericJsonPathConditionContext ctx) {
     String path = ctx.getChild(0).getText();
     AbstractSpecification abstractSpecification = specifications.pop();
 
-    if(abstractSpecification instanceof DoesNotExistsAbstractSpecification){
+    if (abstractSpecification instanceof DoesNotExistsAbstractSpecification) {
       this.specifications.push(new DoesNotExistsAbstractSpecification(jsonPathParser, path, null));
     }
 
-    if(abstractSpecification instanceof ExistsAbstractSpecification){
+    if (abstractSpecification instanceof ExistsAbstractSpecification) {
       this.specifications.push(new ExistsAbstractSpecification(jsonPathParser, path, null));
     }
   }
 
   @Override
   public void exitStringContainsExpression(StringContainsExpressionContext ctx) {
-    this.specifications.push(new StringContains(jsonPathParser, null, null));
+    operatorContextStack.push(ctx);
   }
 
   @Override
   public void exitNumberGreaterThanOperator(NumberGreaterThanOperatorContext ctx) {
-    this.specifications.push(new GreaterThan(jsonPathParser, null, null));
+    operatorContextStack.push(ctx);
   }
 
 
