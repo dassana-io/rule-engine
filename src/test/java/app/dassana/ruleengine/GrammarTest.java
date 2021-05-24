@@ -46,7 +46,8 @@ public class GrammarTest {
         {true, "foo exists", false},
         {true, "negativeNumber exists", true},
         {true, "status is approved", true},
-        {true, "status is foo", false}
+        {true, "status is foo", false},
+        {true, "status exists", true}
 
 /*        {true, "emptyString is not empty", false},
         {true, "emptyObject is not empty", false},
