@@ -40,7 +40,7 @@ string_operators: 'contains' #StringContainsExpression
                 | 'is'       #StringEqualsOperator
                 ;
 
-json_path : .*?; //todo: come up with a valid json path grammar 
+json_path : .*?; //todo: come up with a valid json path grammar
 
 
 jsonpath_expr : jsonpath_dotnotation_expr

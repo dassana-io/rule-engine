@@ -157,13 +157,13 @@ public class RuleSetTreeBuilder extends RuleSetBaseListener {
   }
 
 
-  protected String getValueExpression(RuleSetParser.Json_pathContext value_expr) {
+/*  protected String getValueExpression(RuleSetParser.Json_pathContext value_expr) {
     if (value_expr.jsonpath_expr() != null) {
       return getJsonPathExpression(value_expr.jsonpath_expr());
     }
 
     return value_expr.getText();
-  }
+  }*/
 
   protected String getJsonPathExpression(RuleSetParser.Jsonpath_exprContext jsonpath_expr) {
     return jsonpath_expr.getText();
