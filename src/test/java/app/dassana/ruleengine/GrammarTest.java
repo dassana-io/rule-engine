@@ -23,8 +23,10 @@ public class GrammarTest {
   private final boolean expectedResult;
   private final String sampleJson =
       IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample.json"),
-          Charset.defaultCharset());
-
+          Charset.defaultCharset()); //use sh-notification.json when you want to use real life example
+   /*IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("sh-notification.json"),
+          Charset.defaultCharset())
+*/
   public GrammarTest(boolean validRule, String rule, boolean expectedResult) throws IOException {
     this.validRule = validRule;
     this.rule = rule;
@@ -34,12 +36,13 @@ public class GrammarTest {
   @Parameterized.Parameters
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][]{
+       // {true, "$.detail.findings[?(@.Workflow.Status contains \"N\")] exists", true},
         /* Valid rules. */
         {true, "$.options[?(@.code contains \"AB1\")].area exists", true},
         {true, "$.options[?(@.code == 'AB1')].area exists", true},
         {true, "$.options[?(@.code contains \"x\")].area exists", false},
 
-       {true, "negativeNumber exists", true},
+        {true, "negativeNumber exists", true},
         {true, "$.xyz exists", false},
         {true, "(status contains foo) or (status contains bar or (status contains app) ) ", true},
         {true, "status contains app", true},
