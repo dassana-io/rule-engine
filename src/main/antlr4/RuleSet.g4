@@ -40,10 +40,11 @@ string_operators: 'contains' #StringContainsExpression
                 | 'is'       #StringEqualsOperator
                 ;
 
-json_path : jsonpath_expr
-           | IDENTIFIER
-           ;
+json_path : .*? ;
 
+/*the original code had json path parser, but I don't think we really need it
+ it gets more and more difficult to maintain it so we are using .*? and let the jayway library take care of parsing etc for us
+*/
 jsonpath_expr : jsonpath_dotnotation_expr
               ;
 
@@ -51,6 +52,7 @@ jsonpath_expr : jsonpath_dotnotation_expr
 jsonpath_dotnotation_expr : '$.' dotnotation_expr ('.' dotnotation_expr)* ;
 
 dotnotation_expr : identifierWithQualifier
+                 | identifierWithQualifier.IDENTIFIER
                  | IDENTIFIER
                  ;
 
@@ -81,7 +83,7 @@ STRING_LITERAL :
                 ;
 INT           : '0' | [1-9][0-9]* ;
 NUMERIC_VALUE : '-'?[0-9]+('.'[0-9]+)? ;
-IDENTIFIER    : [a-zA-Z_-][a-zA-Z_0-9-]* ;
+IDENTIFIER    : [a-z.A-Z_-][a-z.A-Z_0-9-]* ;
 RULECOMMENT   : '#' ~[\r\n]*;
 NEWLINE       : '\r'? '\n';
 
