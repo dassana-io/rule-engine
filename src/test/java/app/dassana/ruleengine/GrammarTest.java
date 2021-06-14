@@ -24,6 +24,7 @@ public class GrammarTest {
   private final String sampleJson =
       IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample.json"),
           Charset.defaultCharset());
+
   public GrammarTest(boolean validRule, String rule, boolean expectedResult) throws IOException {
     this.validRule = validRule;
     this.rule = rule;
@@ -34,6 +35,12 @@ public class GrammarTest {
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][]{
         /* Valid rules. */
+        {true, "$.options[?(@.code contains \"AB1\")].area exists", true},
+        {true, "$.options[?(@.code == 'AB1')].area exists", true},
+        {true, "$.options[?(@.code contains \"x\")].area exists", false},
+
+       {true, "negativeNumber exists", true},
+        {true, "$.xyz exists", false},
         {true, "(status contains foo) or (status contains bar or (status contains app) ) ", true},
         {true, "status contains app", true},
         {true, "status contains app and status contains foo and status contains x", false},
@@ -44,10 +51,9 @@ public class GrammarTest {
         {true, "negativeNumber greater than 1", false},
         {true, "foo does not exist", true},
         {true, "foo exists", false},
-        {true, "negativeNumber exists", true},
         {true, "status is approved", true},
         {true, "status is foo", false},
-        {true, "status exists", true}
+        {true, "status exists", true},
 
 /*        {true, "emptyString is not empty", false},
         {true, "emptyObject is not empty", false},
@@ -58,7 +64,7 @@ public class GrammarTest {
            {true,"foo exists",false},
            {true,"applicationArea exists",true},
            {true,"$.applicationArea exists",true},
-           {true,"$.options[?(@.code=='AB1')].area exists",true},
+          ,
 
 
            {true, "applicationArea greater than 7.00", true}, // GreaterThan

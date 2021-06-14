@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.misc.Interval;
 
 public class RuleSetTreeBuilder extends RuleSetBaseListener {
 
@@ -120,7 +121,14 @@ public class RuleSetTreeBuilder extends RuleSetBaseListener {
 
   @Override
   public void exitGenericJsonPathCondition(GenericJsonPathConditionContext ctx) {
-    String path = ctx.getChild(0).getText();
+   // String path = ctx.getChild(0).getText();
+
+    int a = ctx.json_path().start.getStartIndex();
+    int b = ctx.json_path().stop.getStopIndex();
+    Interval interval = new Interval(a,b);
+    String path = ctx.json_path().start.getInputStream().getText(interval);
+
+
     AbstractSpecification abstractSpecification = specifications.pop();
 
     if (abstractSpecification instanceof DoesNotExistsAbstractSpecification) {

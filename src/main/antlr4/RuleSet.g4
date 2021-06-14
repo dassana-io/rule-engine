@@ -40,8 +40,9 @@ string_operators: 'contains' #StringContainsExpression
                 | 'is'       #StringEqualsOperator
                 ;
 
-json_path : .*?; //todo: come up with a valid json path grammar
-
+json_path : jsonpath_expr
+           | IDENTIFIER
+           ;
 
 jsonpath_expr : jsonpath_dotnotation_expr
               ;
@@ -66,7 +67,8 @@ query_expr : query_expr ('&&' query_expr)+
            | '@.' IDENTIFIER '<' INT
            | '@.length-' INT
            | '@.' IDENTIFIER '==' INT
-           | '@.' IDENTIFIER '==\'' IDENTIFIER '\''
+           | '@.' IDENTIFIER '==' '\'' IDENTIFIER '\''
+           | '@.' IDENTIFIER 'contains'  STRING_LITERAL
            ;
 
 string_comparison_value  : INT | NUMERIC_VALUE | IDENTIFIER | STRING_LITERAL ;
