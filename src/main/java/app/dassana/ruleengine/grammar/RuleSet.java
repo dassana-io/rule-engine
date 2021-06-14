@@ -1,9 +1,9 @@
 package app.dassana.ruleengine.grammar;
 
 import app.dassana.ruleengine.grammar.specification.AbstractSpecification;
-
-import com.jayway.jsonpath.PathNotFoundException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class RuleSet implements IRuleSet {
     public final List<AbstractSpecification> rules;
@@ -24,16 +24,9 @@ public class RuleSet implements IRuleSet {
     {
         boolean result = true;
         for(AbstractSpecification rule:rules)
-        {
-            try {
-                if(!rule.isSatisfiedBy(jsonData))
-                {
-                    result = false;
-                }
-            } catch (PathNotFoundException e) {
-                return false;
+            if (!rule.isSatisfiedBy(jsonData)) {
+                result = false;
             }
-        }
         return result;
     }
 }
