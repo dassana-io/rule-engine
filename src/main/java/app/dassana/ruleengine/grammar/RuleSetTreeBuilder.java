@@ -21,8 +21,6 @@ import app.dassana.rules.RuleSetParser.NumberGreaterThanOperatorContext;
 import app.dassana.rules.RuleSetParser.ParenExpressionContext;
 import app.dassana.rules.RuleSetParser.StringContainsExpressionContext;
 import app.dassana.rules.RuleSetParser.StringEqualsOperatorContext;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Stack;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
@@ -121,12 +119,12 @@ public class RuleSetTreeBuilder extends RuleSetBaseListener {
 
   @Override
   public void exitGenericJsonPathCondition(GenericJsonPathConditionContext ctx) {
-   // String path = ctx.getChild(0).getText();
+    String path = ctx.getChild(0).getText();
 
     int a = ctx.json_path().start.getStartIndex();
     int b = ctx.json_path().stop.getStopIndex();
     Interval interval = new Interval(a,b);
-    String path = ctx.json_path().start.getInputStream().getText(interval);
+    //String path = ctx.json_path().start.getInputStream().getText(interval);
 
 
     AbstractSpecification abstractSpecification = specifications.pop();
@@ -156,13 +154,13 @@ public class RuleSetTreeBuilder extends RuleSetBaseListener {
     specifications.push(new DoesNotExistsAbstractSpecification(jsonPathParser, null, null));
   }
 
-  protected List<String> getArray(RuleSetParser.String_arrayContext string_array) {
+/*  protected List<String> getArray(RuleSetParser.String_arrayContext string_array) {
     String arrayString = string_array.getText()
         .replace("(", "")
         .replace(")", "");
 
     return Arrays.asList(arrayString.split("\\s*,\\s*"));
-  }
+  }*/
 
 
 /*  protected String getValueExpression(RuleSetParser.Json_pathContext value_expr) {
@@ -173,7 +171,7 @@ public class RuleSetTreeBuilder extends RuleSetBaseListener {
     return value_expr.getText();
   }*/
 
-  protected String getJsonPathExpression(RuleSetParser.Jsonpath_exprContext jsonpath_expr) {
+/*  protected String getJsonPathExpression(RuleSetParser.Jsonpath_exprContext jsonpath_expr) {
     return jsonpath_expr.getText();
-  }
+  }*/
 }

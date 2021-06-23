@@ -23,10 +23,8 @@ public class GrammarTest {
   private final boolean expectedResult;
   private final String sampleJson =
       IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample.json"),
-          Charset.defaultCharset()); //use sh-notification.json when you want to use real life example
-   /*IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("sh-notification.json"),
-          Charset.defaultCharset())
-*/
+          Charset.defaultCharset());
+
   public GrammarTest(boolean validRule, String rule, boolean expectedResult) throws IOException {
     this.validRule = validRule;
     this.rule = rule;
@@ -36,16 +34,17 @@ public class GrammarTest {
   @Parameterized.Parameters
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][]{
-       // {true, "$.detail.findings[?(@.Workflow.Status contains \"N\")] exists", true},
-        /* Valid rules. */
-        {true, "$.options[?(@.code contains \"AB1\")].area exists", true},
-        {true, "$.options[?(@.code == 'AB1')].area exists", true},
-        {true, "$.options[?(@.code contains \"x\")].area exists", false},
+        {true, "\"$.options[?(@.code contains \\\"AB1\\\")].area\" exists", true},
+        {true, "\"$.options[?(@.code == 'AB1')].area\" exists", true},
+        {true, "\"$.options[?(@.code contains \\\"x\\\")].area\" exists", false},
 
-        {true, "negativeNumber exists", true},
-        {true, "$.xyz exists", false},
-        {true, "(status contains foo) or (status contains bar or (status contains app) ) ", true},
-        {true, "status contains app", true},
+        {true, "\"negativeNumber\" exists", true},
+        {true, "\"$.xyz\" exists", false},
+        {true, "\"$.xyz\" does not exist", true},
+        {false, "\"$.foo\" is bar", false},
+        {false, "\"$.foo\" contains bar", false},
+        {true, "(\"status\" contains foo) or (\"status\" contains bar or (\"status\" contains app) ) ", true},
+        {true, "\"status\" contains app", true},
         {true, "status contains app and status contains foo and status contains x", false},
         {true, "not not not status contains foo", true},
         {true, "not not not status contains foo and status contains app", true},
@@ -57,69 +56,9 @@ public class GrammarTest {
         {true, "status is approved", true},
         {true, "status is foo", false},
         {true, "status exists", true},
-
-/*        {true, "emptyString is not empty", false},
-        {true, "emptyObject is not empty", false},
-        {true, "applicationArea is not empty", true},
-        {true, "options is not empty", true},
-        {true, "organic is not empty", true},
-        {true, "landUseCodes is not empty", true},
-           {true,"foo exists",false},
-           {true,"applicationArea exists",true},
-           {true,"$.applicationArea exists",true},
-          ,
-
-
-           {true, "applicationArea greater than 7.00", true}, // GreaterThan
-           {true, "applicationArea greater than 9.1", false},
-
-           {true, "applicationArea less than 9.99", true},    // LessThan
-           {true, "applicationArea less than -1.00", false},
-
-           {true, "status equals approved", true},            // StringEquals
-           {true, "status equals rejected", false},
-
-           {true, "landUseCodes contains GH", true},          // StringContains
-           {true, "landUseCodes contains XX", false},
-
-           {true, "organic is true", false},                  // IsTrue
-           {true, "organic is false", true},                  // IsFalse
-
-           {true, "not status equals rejected", true},        // NotSpecification
-           {true, "not status equals approved", false},
-
-           {true, "applicationArea greater than 7.00 and applicationArea less than 9.99", true}, // AndSpecification
-           {true, "applicationArea greater than 9.99 and applicationArea less than 7.00", false},
-
-           {true, "status equals approved or landUseCodes contains XX", true},        // OrSpecification
-           {true, "status equals rejected or landUseCodes contains XX", false},
-
-           {true, "applicationArea greater than 7.00\nstatus equals approved", true}, // Composite
-           {true, "applicationArea greater than 7.00\nstatus equals rejected", false},
-
-           {true, "$.applicationArea greater than 1", true},                     // JsonPath dot notation
-           {true, "$.options[0].area greater than 4", false},
-           {true, "$.options[?(@.code=='AB1')].area equals 3", true},
-           {true, "$.options[?(@.code=='AB8')].area less than 3", true},
-
-           {true, "$.options[*].code includes one (AB1,XX99)", true}, // ArrayIncludesOne
-           {true, "$.options[*].code includes one (XX99)", false},
-
-           {true, "SUM($.options[*].area) greater than 4", true},            // NumericTotalledJsonPathExpression
-           {true, "SUM($.options[*].area) less than applicationArea", true}, // NumericTotalledJsonPathExpression with rightArithmeticExpression
-
-           {true, "(4 + 2) greater than (1 + 2)", true},
-           {true, "(4 + 2) greater than 3", true},
-           {true, "6 greater than (1 + 2)", true},
-           {true, "6 greater than 3", true},
-
-           {true, "(4 + 2) less than (1 + 8)", true},
-           {true, "(4 + 2) less than 9", true},
-           {true, "6 less than (1 + 8)", true},
-           {true, "6 less than 9", true},*/
-
-        //Invalid rules.
-        /* {false, "", false} // empty rule*/
+        {true, "\"array[?(@.ProductFields.aws/securityhub/ProductName == \\\"Security Hub\\\" )]\" exists", true},
+        {true, "\"array[?(@.ProductFields.aws/securityhub/ProductName contains \\\"Security Hub\\\" )]\" exists", true},
+        {true, "\"array[?(@.ProductFields.aws/securityhub/ProductName contains \\\"bar\\\" )]\" exists", false}
     });
   }
 
@@ -130,6 +69,7 @@ public class GrammarTest {
 
     try {
       // Outputs rule parsed as LISP style tree, useful for debugging
+      System.out.println("Rule:" + rule);
       System.out.println("Rule tree: " + ruleSetCompiler.getParseTreeAsString(rule));
 
       Boolean result = ruleSetCompiler.getCompiledRuleSet(rule).isSatisfiedBy(sampleJson);
