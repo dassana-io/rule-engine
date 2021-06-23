@@ -83,7 +83,7 @@ In JSON Path, for parent level keys, the `$` is optional so the following rules 
 
 For anything slightly more complicated, the JSON path must be double-quoted. The format is - `"<jsonPath>" operator value`
 
-Take for example the rule `"$.options[?(@.code contains x")].area" exists`. As you can see, the entire json path is qutoed with double quotes.
+Take for example the rule `"$.options[?(@.code contains 'AB1')].area" exists`. As you can see, the entire json path is quoted with double quotes.
 
 What if, within the json path you have a double quote? Well, you escape it like this- `"$.options[?(@.code contains \"x\")].area" exists`
 
