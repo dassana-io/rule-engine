@@ -1,16 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
 
-
-  <groupId>app.dassana.core</groupId>
+  <groupId>app.dassana</groupId>
   <artifactId>rule-engine</artifactId>
   <version>1.6.0-SNAPSHOT</version>
 
   <packaging>jar</packaging>
 
   <!-- this project is inspired from https://github.com/stevenalexander/rules-evaluator -->
+
+
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>gk</id>
+      <name>Gaurav Kumar</name>
+      <email>gk+maven@dassana.io</email>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:${project.scm.url}</connection>
+    <developerConnection>scm:git:${project.scm.url}</developerConnection>
+    <url>https://github.com/dassana-io/rule-engine</url>
+  </scm>
+
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,10 +44,13 @@
 
 
   <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
     <repository>
-      <id>github</id>
-      <name>Dassana Rule Engine</name>
-      <url>https://maven.pkg.github.com/dassana-io/rule-engine</url>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
     </repository>
   </distributionManagement>
 
@@ -61,7 +88,6 @@
       <artifactId>commons-text</artifactId>
       <version>1.9</version>
     </dependency>
-
 
 
     <dependency>
@@ -139,12 +165,40 @@
         </executions>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.2.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.2</version>
+      </plugin>
+
     </plugins>
   </build>
-  <scm>
-    <connection>scm:git:${project.scm.url}</connection>
-    <developerConnection>scm:git:${project.scm.url}</developerConnection>
-    <url>git@github.com:dassana-io/rule-engine.git</url>
-  </scm>
+
 
 </project>
