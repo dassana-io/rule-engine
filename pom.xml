@@ -10,6 +10,9 @@
   <version>1.6.1-SNAPSHOT</version>
 
   <packaging>jar</packaging>
+  <description>JSON matching rule engine</description>
+  <name>Dassana JSON Rule Engine</name>
+  <url>https://github.com/dassana-io/rule-engine</url>
 
   <!-- this project is inspired from https://github.com/stevenalexander/rules-evaluator -->
 
