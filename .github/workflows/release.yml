@@ -35,7 +35,9 @@ jobs:
 
 
 
-      - name: maven package release
+
+
+      - name: Update version before publishing to maven central
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
@@ -44,20 +46,29 @@ jobs:
           #why this email? see https://github.community/t/github-actions-bot-email-address/17204/5
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Action"
-          
 
           current_tag=$(git describe --abbrev=0 --tags)
-          mvn versions:set -DnewVersion=$current_tag -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
-          -Darguments="-DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+          mvn versions:set -DnewVersion=$current_tag --no-transfer-progress -B \
+          -Darguments="-DskipTests -no-transfer-progress -B"
 
-          mvn -Psign \
-          --no-transfer-progress \
-          --batch-mode \
-          deploy
+          #mvn -DskipTests --no-transfer-progress --batch-mode  deploy
 
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.MAVEN_SSH_PRIVATE_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          mvn -B -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
-          -Darguments="-DskipTests -Dmaven.javadoc.skip=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.deploy.skip=true -Dmaven.javadoc.skip=true" \
+      - name: Release Maven package
+        uses: samuelmeuli/action-maven-publish@v1
+        with:
+          gpg_private_key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY}}
+          gpg_passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          nexus_username: ${{ secrets.OSSRH_USERNAME }}
+          nexus_password: ${{ secrets.OSSRH_TOKEN }}
+
+      - name: Updade versions
+        run: |
+          mvn -B -DskipTests -no-transfer-progress -B \
+          -Darguments="-no-transfer-progress -B -Dmaven.deploy.skip=true -Dmaven.javadoc.skip=true" \
           -DreleaseVersion=$current_tag \
           -Dtag=$current_tag \
           -DdevelopmentVersion=$current_tag-SNAPSHOT \
@@ -65,14 +76,6 @@ jobs:
 
           git add pom.xml
           git commit -m '[ci skip] setting new version after release'
-
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.MAVEN_SSH_PRIVATE_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-
 
       - name: Create Pull Request
         id: cpr
