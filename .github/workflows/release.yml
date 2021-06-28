@@ -31,6 +31,8 @@ jobs:
 
 
 
+
+
       - name: maven package release
         run: |
           mkdir -p ~/.ssh
@@ -46,11 +48,10 @@ jobs:
           mvn versions:set -DnewVersion=$current_tag -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
           -Darguments="-DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
-          mvn \
+          mvn -Psign \
           --no-transfer-progress \
           --batch-mode \
           deploy
-          -Psign
 
 
           mvn -B -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
