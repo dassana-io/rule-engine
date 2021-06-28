@@ -20,10 +20,10 @@ jobs:
         with:
           java-version: 1.11
           server-id: ossrh
-          server-username: ${{ secrets.OSSRH_USERNAME }}
-          server-password: ${{ secrets.OSSRH_TOKEN }}
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          server-username: OSSRH_USERNAME
+          server-password: OSSRH_TOKEN
+          gpg-private-key: MAVEN_GPG_PRIVATE_KEY
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: maven package release
         run: |
@@ -40,8 +40,11 @@ jobs:
           mvn versions:set -DnewVersion=$current_tag -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
           -Darguments="-DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
-          mvn -B deploy -Psign -DskipTests  \
-          -Darguments="-DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+          mvn \
+          --no-transfer-progress \
+          --batch-mode \
+          deploy
+          -Psign
 
 
           mvn -B -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
