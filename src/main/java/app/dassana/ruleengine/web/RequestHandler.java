@@ -7,6 +7,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.MicronautRequestHandler;
+import io.micronaut.http.HttpStatus;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -31,7 +32,27 @@ public class RequestHandler extends
     if (StringUtils.isNotEmpty(rule)) {
       Map<String, Boolean> response = new HashMap<>();
       Boolean satisfiedBy;
-      String parseTreeAsString="";
+      String parseTreeAsString = "";
+
+      String matchType = input.getHeaders().getOrDefault("x-dassana-check-type", "match");
+
+      if (matchType.contentEquals("grammar")) {
+
+        try {
+          parseTreeAsString = ruleSetCompiler.getParseTreeAsString(rule);
+        } catch (Exception e) {
+          StringWriter sw = new StringWriter();
+          PrintWriter pw = new PrintWriter(sw);
+          e.printStackTrace(pw);
+          httpResponse.setBody(sw.toString());
+          httpResponse.setStatusCode(HttpStatus.BAD_REQUEST.getCode());
+          return httpResponse;
+        }
+        httpResponse.setBody(parseTreeAsString);
+        httpResponse.setStatusCode(200);
+        return httpResponse;
+      }
+
       try {
         satisfiedBy = ruleSetCompiler.getCompiledRuleSet(rule).isSatisfiedBy(jsonData);
         parseTreeAsString = ruleSetCompiler.getParseTreeAsString(rule);
@@ -56,8 +77,8 @@ public class RequestHandler extends
       }
 
       Map<String, String> headers = httpResponse.getHeaders();
-      if(headers==null){
-        headers=new HashMap<>();
+      if (headers == null) {
+        headers = new HashMap<>();
       }
       headers.put("x-dassana-parsed-rule-tree", StringEscapeUtils.unescapeJava(parseTreeAsString));
       httpResponse.setBody(new JSONObject(response).toString());

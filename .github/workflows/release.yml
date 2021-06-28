@@ -44,7 +44,7 @@ jobs:
           gpg_passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           nexus_username: ${{ secrets.OSSRH_USERNAME }}
           nexus_password: ${{ secrets.OSSRH_TOKEN }}
-          maven_args: -no-transfer-progress -B -DskipTests
+          maven_args: -no-transfer-progress -B -DskipTests -Pmavencentral
 
       - name: Updade versions
         run: |
