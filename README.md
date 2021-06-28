@@ -90,3 +90,9 @@ What if, within the json path you have a double quote? Well, you escape it like 
 When the library parses it, it sends the following to the JSON path engine- `$.options[?(@.code contains "x")].area`
 
 Note that you do *not* have to escape a single quote. As such, following is a valid rule :`"$.options[?(@.code contains 'x')].area" exists`. Notice how we are not escaping the single quote around `x`.
+
+## Dev Notes
+For local development/testing, you can use the maven command
+`mvn install -DskipTests -Dmaven.javadoc.skip -Dgpg.skip`
+
+### TODO:
