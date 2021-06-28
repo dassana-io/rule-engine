@@ -48,6 +48,7 @@ jobs:
 
       - name: Updade versions
         run: |
+          current_tag=$(git describe --abbrev=0 --tags)
           mvn -B  -no-transfer-progress -DskipTests \
           -Darguments="-no-transfer-progress -B -Dmaven.deploy.skip=true -Dmaven.javadoc.skip=true" \
           -DreleaseVersion=$current_tag \
