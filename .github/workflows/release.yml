@@ -20,23 +20,6 @@ jobs:
         with:
           java-version: 1.11
           server-id: ossrh
-          server-username: OSSRH_USERNAME
-          server-password: OSSRH_TOKEN
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY}}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
-        env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-
-
-
-
-
-
-
-
-
       - name: Update version before publishing to maven central
         run: |
           mkdir -p ~/.ssh
@@ -64,10 +47,11 @@ jobs:
           gpg_passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           nexus_username: ${{ secrets.OSSRH_USERNAME }}
           nexus_password: ${{ secrets.OSSRH_TOKEN }}
+          maven_args: -no-transfer-progress -B
 
       - name: Updade versions
         run: |
-          mvn -B -DskipTests -no-transfer-progress -B \
+          mvn -B  -no-transfer-progress -DskipTests \
           -Darguments="-no-transfer-progress -B -Dmaven.deploy.skip=true -Dmaven.javadoc.skip=true" \
           -DreleaseVersion=$current_tag \
           -Dtag=$current_tag \
