@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONObject;
 
 @Introspected
@@ -29,10 +30,11 @@ public class RequestHandler extends
 
     if (StringUtils.isNotEmpty(rule)) {
       Map<String, Boolean> response = new HashMap<>();
-
       Boolean satisfiedBy;
+      String parseTreeAsString="";
       try {
         satisfiedBy = ruleSetCompiler.getCompiledRuleSet(rule).isSatisfiedBy(jsonData);
+        parseTreeAsString = ruleSetCompiler.getParseTreeAsString(rule);
       } catch (Exception e) {
         if (e.getMessage().contentEquals("org.antlr.v4.runtime.NoViableAltException")) {
           httpResponse.setBody("invalid rule");
@@ -53,7 +55,13 @@ public class RequestHandler extends
         response.put("match", false);
       }
 
+      Map<String, String> headers = httpResponse.getHeaders();
+      if(headers==null){
+        headers=new HashMap<>();
+      }
+      headers.put("x-dassana-parsed-rule-tree", StringEscapeUtils.unescapeJava(parseTreeAsString));
       httpResponse.setBody(new JSONObject(response).toString());
+      httpResponse.setHeaders(headers);
 
 
     } else {

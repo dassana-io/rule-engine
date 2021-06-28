@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -71,7 +72,7 @@ public class GrammarTest {
     try {
       // Outputs rule parsed as LISP style tree, useful for debugging
       System.out.println("Rule:" + rule);
-      System.out.println("Rule tree: " + ruleSetCompiler.getParseTreeAsString(rule));
+      System.out.println("Rule tree: " + StringEscapeUtils.unescapeJava(ruleSetCompiler.getParseTreeAsString(rule)));
 
       Boolean result = ruleSetCompiler.getCompiledRuleSet(rule).isSatisfiedBy(sampleJson);
       if (!validRule) {
