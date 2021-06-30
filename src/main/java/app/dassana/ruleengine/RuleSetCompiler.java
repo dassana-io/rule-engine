@@ -14,61 +14,70 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class RuleSetCompiler implements IRuleSetCompiler {
 
-    protected IJsonPathParser jsonPathParser;
+  protected IJsonPathParser jsonPathParser;
 
-    public RuleSetCompiler(IJsonPathParser jsonPathParser) {
-        this.jsonPathParser = jsonPathParser;
-    }
+  public RuleSetCompiler(IJsonPathParser jsonPathParser) {
+    this.jsonPathParser = jsonPathParser;
+  }
 
-    public IRuleSet getCompiledRuleSet(String rule) {
-        CharStream input = new ANTLRInputStream(rule);
-        app.dassana.rules.RuleSetLexer lexer = new app.dassana.rules.RuleSetLexer(input);
-        TokenStream tokens = new CommonTokenStream(lexer);
-        app.dassana.rules.RuleSetParser parser = new app.dassana.rules.RuleSetParser(tokens);
+  public IRuleSet getCompiledRuleSet(String rule) {
+    CharStream input = new ANTLRInputStream(rule);
+    app.dassana.rules.RuleSetLexer lexer = new app.dassana.rules.RuleSetLexer(input);
 
-        RuleSetTreeBuilder ruleSetTreeBuilder = new RuleSetTreeBuilder(jsonPathParser);
+    lexer.removeErrorListeners();
+    lexer.addErrorListener(new ErrorListener());
 
-        parser.addParseListener(ruleSetTreeBuilder);
-        parser.setErrorHandler(new ExceptionThrowingErrorHandler());
-        parser.rule_set();
+    TokenStream tokens = new CommonTokenStream(lexer);
+    app.dassana.rules.RuleSetParser parser = new app.dassana.rules.RuleSetParser(tokens);
 
-        return ruleSetTreeBuilder.getRuleSet();
-    }
+    RuleSetTreeBuilder ruleSetTreeBuilder = new RuleSetTreeBuilder(jsonPathParser);
 
-    public String getParseTreeAsString(String rule) {
-        CharStream input = new ANTLRInputStream(rule);
-        app.dassana.rules.RuleSetLexer lexer = new app.dassana.rules.RuleSetLexer(input);
-        TokenStream tokens = new CommonTokenStream(lexer);
-        app.dassana.rules.RuleSetParser parser = new app.dassana.rules.RuleSetParser(tokens);
+    parser.removeErrorListeners();
+    parser.addErrorListener(new ErrorListener());
+    parser.setErrorHandler(new ExceptionThrowingErrorHandler());
 
-        parser.removeErrorListeners();
-        parser.removeParseListeners();
+    parser.addParseListener(ruleSetTreeBuilder);
 
-        parser.setErrorHandler(new ExceptionThrowingErrorHandler());
+    parser.rule_set();
 
-        parser.addParseListener(new ParseTreeListener() {
-            @Override
-            public void visitTerminal(TerminalNode node) {
+    return ruleSetTreeBuilder.getRuleSet();
+  }
 
-            }
+  public String getParseTreeAsString(String rule) {
+    CharStream input = new ANTLRInputStream(rule);
+    app.dassana.rules.RuleSetLexer lexer = new app.dassana.rules.RuleSetLexer(input);
+    lexer.removeErrorListeners();
+    lexer.addErrorListener(new ErrorListener());
+    TokenStream tokens = new CommonTokenStream(lexer);
+    app.dassana.rules.RuleSetParser parser = new app.dassana.rules.RuleSetParser(tokens);
 
-            @Override
-            public void visitErrorNode(ErrorNode node) {
-               throw new RuntimeException("Error near ".concat(node.toString()));
+    parser.removeErrorListeners();
+    parser.addErrorListener(new ErrorListener());
 
-            }
+    parser.setErrorHandler(new ExceptionThrowingErrorHandler());
 
-            @Override
-            public void enterEveryRule(ParserRuleContext ctx) {
+    parser.addParseListener(new ParseTreeListener() {
+      @Override
+      public void visitTerminal(TerminalNode node) {
 
-            }
+      }
 
-            @Override
-            public void exitEveryRule(ParserRuleContext ctx) {
-            }
-        });
+      @Override
+      public void visitErrorNode(ErrorNode node) {
+        throw new RuntimeException("Error near ".concat(node.toString()));
 
+      }
 
-        return parser.rule_set().toStringTree(parser);
-    }
+      @Override
+      public void enterEveryRule(ParserRuleContext ctx) {
+
+      }
+
+      @Override
+      public void exitEveryRule(ParserRuleContext ctx) {
+      }
+    });
+
+    return parser.rule_set().toStringTree(parser);
+  }
 }
