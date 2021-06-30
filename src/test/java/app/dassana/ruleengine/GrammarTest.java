@@ -35,6 +35,7 @@ public class GrammarTest {
   @Parameterized.Parameters
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][]{
+        {false,"\\\"$.xyz\" exists ",false},
         {true,"\"$.options[?(@.code contains 'x')].area\" exists",false},
         {true, "\"$.options[?(@.code contains \\\"AB1\\\")].area\" exists", true},
         {true, "\"$.options[?(@.code == 'AB1')].area\" exists", true},
