@@ -31,6 +31,7 @@ operator:
 
 generic_operators: 'exists' #ExistsOperator
                   | 'does not exist' #DoesNotExistOperator
+                  | 'is empty' #EmptyOperator
                   ;
 
 number_operators: 'greater than' #NumberGreaterThanOperator

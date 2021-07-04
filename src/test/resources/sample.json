@@ -1,6 +1,20 @@
 {
+  "nullValue": null,
+  "names": [
+    "foo",
+    "bar"
+  ],
+  "arrayOfObjects": [
+    {
+      "foo": "bar"
+    },
+    {
+      "bar": "foo"
+    }
+  ],
   "emptyString": "",
   "emptyObject": {},
+  "emptyArray": [],
   "applicationArea": 9.2,
   "number": 42,
   "negativeNumber": -42,

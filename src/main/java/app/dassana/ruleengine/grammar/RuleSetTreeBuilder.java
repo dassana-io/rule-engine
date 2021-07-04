@@ -4,6 +4,7 @@ import app.dassana.ruleengine.IJsonPathParser;
 import app.dassana.ruleengine.grammar.specification.AbstractSpecification;
 import app.dassana.ruleengine.grammar.specification.AndSpecification;
 import app.dassana.ruleengine.grammar.specification.DoesNotExistsAbstractSpecification;
+import app.dassana.ruleengine.grammar.specification.EmptySpecification;
 import app.dassana.ruleengine.grammar.specification.ExistsAbstractSpecification;
 import app.dassana.ruleengine.grammar.specification.NotSpecification;
 import app.dassana.ruleengine.grammar.specification.OrSpecification;
@@ -13,6 +14,7 @@ import app.dassana.ruleengine.grammar.specification.string.StringEquals;
 import app.dassana.rules.RuleSetBaseListener;
 import app.dassana.rules.RuleSetParser;
 import app.dassana.rules.RuleSetParser.DoesNotExistOperatorContext;
+import app.dassana.rules.RuleSetParser.EmptyOperatorContext;
 import app.dassana.rules.RuleSetParser.ExistsOperatorContext;
 import app.dassana.rules.RuleSetParser.GenericJsonPathConditionContext;
 import app.dassana.rules.RuleSetParser.JsonPathConditionContext;
@@ -136,6 +138,10 @@ public class RuleSetTreeBuilder extends RuleSetBaseListener {
     if (abstractSpecification instanceof ExistsAbstractSpecification) {
       this.specifications.push(new ExistsAbstractSpecification(jsonPathParser, path, null));
     }
+
+    if(abstractSpecification instanceof EmptySpecification){
+      this.specifications.push(new EmptySpecification(jsonPathParser, path, null));
+    }
   }
 
   @Override
@@ -154,7 +160,12 @@ public class RuleSetTreeBuilder extends RuleSetBaseListener {
     specifications.push(new DoesNotExistsAbstractSpecification(jsonPathParser, null, null));
   }
 
-/*  protected List<String> getArray(RuleSetParser.String_arrayContext string_array) {
+  @Override
+  public void exitEmptyOperator(EmptyOperatorContext ctx) {
+    specifications.push(new EmptySpecification(jsonPathParser,null,null));
+  }
+
+  /*  protected List<String> getArray(RuleSetParser.String_arrayContext string_array) {
     String arrayString = string_array.getText()
         .replace("(", "")
         .replace(")", "");

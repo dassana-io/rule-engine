@@ -35,6 +35,17 @@ public class GrammarTest {
   @Parameterized.Parameters
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][]{
+        {false,"$.nullValue is empty",false},
+        {false,"$.number is empty",false},
+        {false,"$.organic is empty",false},
+        {true,"$.arrayOfObjects is empty",false},
+        {true,"$.names is empty",false},
+        {true,"$.emptyString is empty",true},
+        {true,"$.emptyArray is empty",true},
+        {true,"$.names exists",true},
+        {true,"not $.names exists",false},
+
+        {true,"$.emptyObject exists",true},
         {false,"\\\"$.xyz\" exists ",false},
         {true,"\"$.options[?(@.code contains 'x')].area\" exists",false},
         {true, "\"$.options[?(@.code contains \\\"AB1\\\")].area\" exists", true},
