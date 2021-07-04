@@ -5,7 +5,7 @@
 
   <groupId>app.dassana</groupId>
   <artifactId>rule-engine</artifactId>
-  <version>1.8.0-SNAPSHOT</version>
+  <version>1.9.0-SNAPSHOT</version>
 
   <packaging>jar</packaging>
   <description>JSON matching rule engine</description>
