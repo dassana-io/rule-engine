@@ -1,0 +1,13 @@
+name: ⛔ Question
+description: Please use GitHub Discussions or Slack for support
+body:
+- type: markdown
+  attributes:
+    value: |
+      Please do not use GitHub Issues for asking questions. Instead, if you have a general question about Dassana we encourage you to post on our [Slack workspace](https://dassana.io) or on [GitHub Discussions](https://github.com/dassana-io/dassana/discussions) instead of this issue tracker. The maintainers and other community members can provide help and answer your questions there.
+      
+      Please keep in mind that many of Dassana's core and expert developers prefer to handle support queries through [GitHub Discussions](https://github.com/dassana-io/dassana/discussions), since the non-realtime format encourages more structured and fully-formed questions. Asking questions on GitHub Discussions requires more up-front effort, but you may well find you get a better response as a result.
+      
+      If you've discovered a bug or would like to propose a feature request please use one of the other issue templates.
+      
+      Thanks!
