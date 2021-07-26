@@ -21,11 +21,11 @@ The JSON rule `$.name is bond` will match (i.e. the library will return `True`).
 
 The JSON rule will be parsed as following-
 
-`path` :`$.name`
+`path`: `$.name`
 
 `operator`: `is`
 
-`value`:`bond`
+`value`: `bond`
 
 
 The value can be optional in the case of generic operators (e.g. `$.name exists`).
@@ -67,13 +67,13 @@ JSON Input:
 
 |Rule  | Is Rule Valid? |Evaluation Result/Note
 |--|--|--|  
-| `$.names exists` |yes  | True
-| `$.foo exists` |yes  | False
-| `$.foo does not exist` |yes  | True
-| `not $.foo exists` |yes  | True
-| `emptyString is empty` |yes  | True
-| `$.emptyObject is empty` |yes  | True. For root level keys, `$` is optional.
-| `$.number is empty` |no | $.number points to a number but `is empty` operator is not supported for numbers.
+| `$.names exists` |Yes  | True
+| `$.foo exists` |Yes  | False
+| `$.foo does not exist` |Yes  | True
+| `not $.foo exists` |Yes  | True
+| `emptyString is empty` |Yes  | True
+| `$.emptyObject is empty` |Yes  | True. For root level keys, `$` is optional.
+| `$.number is empty` |No | $.number points to a number but `is empty` operator is not supported for numbers.
 | `$.number greater than 1` |Yes | True
 | `$.name contains bo` |Yes | True
 | `$.name contains X` |Yes | True
