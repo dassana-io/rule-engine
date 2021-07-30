@@ -3,6 +3,7 @@ package app.dassana.ruleengine;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -18,7 +19,7 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class GrammarTest {
 
-  private final RuleSetCompiler ruleSetCompiler = new RuleSetCompiler(new JsonPathParser());
+  private final RuleSetCompiler ruleSetCompiler = new RuleSetCompiler(new JqPathParser());
   private final boolean validRule;
   private final String rule;
   private final boolean expectedResult;
@@ -35,44 +36,31 @@ public class GrammarTest {
   @Parameterized.Parameters
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][]{
-        {false,"$.nullValue is empty",false},
-        {false,"$.number is empty",false},
-        {false,"$.organic is empty",false},
-        {true,"$.arrayOfObjects is empty",false},
-        {true,"$.names is empty",false},
-        {true,"$.emptyString is empty",true},
-        {true,"$.emptyArray is empty",true},
-        {true,"$.names exists",true},
-        {true,"not $.names exists",false},
-
-        {true,"$.emptyObject exists",true},
-        {false,"\\\"$.xyz\" exists ",false},
-        {true,"\"$.options[?(@.code contains 'x')].area\" exists",false},
-        {true, "\"$.options[?(@.code contains \\\"AB1\\\")].area\" exists", true},
-        {true, "\"$.options[?(@.code == 'AB1')].area\" exists", true},
-        {true, "\"$.options[?(@.code contains \\\"x\\\")].area\" exists", false},
-
-        {true, "\"negativeNumber\" exists", true},
-        {true, "\"$.xyz\" exists", false},
-        {true, "\"$.xyz\" does not exist", true},
-        {false, "\"$.foo\" is bar", false},
-        {false, "\"$.foo\" contains bar", false},
-        {true, "(\"status\" contains foo) or (\"status\" contains bar or (\"status\" contains app) ) ", true},
-        {true, "\"status\" contains app", true},
-        {true, "status contains app and status contains foo and status contains x", false},
-        {true, "not not not status contains foo", true},
-        {true, "not not not status contains foo and status contains app", true},
-        {true, "applicationArea greater than 9.1", true},
-        {true, "number greater than 1", true},
-        {true, "negativeNumber greater than 1", false},
-        {true, "foo does not exist", true},
-        {true, "foo exists", false},
-        {true, "status is approved", true},
-        {true, "status is foo", false},
-        {true, "status exists", true},
-        {true, "\"array[?(@.ProductFields.aws/securityhub/ProductName == \\\"Security Hub\\\" )]\" exists", true},
-        {true, "\"array[?(@.ProductFields.aws/securityhub/ProductName contains \\\"Security Hub\\\" )]\" exists", true},
-        {true, "\"array[?(@.ProductFields.aws/securityhub/ProductName contains \\\"bar\\\" )]\" exists", false}
+        {true, "\".organic == false\"", true},
+        {true, "\".organic == true\"", false},
+        {true, ".status is approved", true},
+        {true, ".status contains app", true},
+        {true, ".status contains foo", false},
+        {true, ".status is foo", false},
+        {true, ".organic is true", false},
+        {true, ".organic is false", true},
+        {true, ".trueKey is true", true},
+        {false, ".trueKey is blah", false},
+        {true, ".applicationArea greater than 0", true},
+        {true, ".applicationArea greater than 10", false},
+        {true, ".number greater than 0 and .organic is false", true},
+        {true, ".trueKey is true or .organic is true", true},
+        {true, ".trueKey is true or .organic is false", true},
+        {true, ".trueKey is false or .organic is true", false},
+        {true, "not .trueKey is false", true},
+        {true, "not not .trueKey is false", false},
+        {true, "not not not .trueKey is false", true},
+        {true, ".blah exists", false},
+        {true, ".blah does not exist", true},
+        {true, ".emptyObject is empty", true},
+        {true, ".emptyArray is empty", true},
+        {true, ".emptyString is empty", true},
+        {true, ".array is empty", false},
     });
   }
 

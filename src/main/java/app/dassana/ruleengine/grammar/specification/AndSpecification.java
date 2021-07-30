@@ -1,6 +1,8 @@
 package app.dassana.ruleengine.grammar.specification;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 public class AndSpecification extends AbstractSpecification {
 
   ISpecification leftSpecification;
@@ -13,7 +15,7 @@ public class AndSpecification extends AbstractSpecification {
     this.rightSpecification = rightSpecification;
   }
 
-  public boolean isSatisfiedBy(String jsonData) {
+  public boolean isSatisfiedBy(String jsonData) throws JsonProcessingException {
     return this.leftSpecification.isSatisfiedBy(jsonData) && this.rightSpecification.isSatisfiedBy(jsonData);
   }
 

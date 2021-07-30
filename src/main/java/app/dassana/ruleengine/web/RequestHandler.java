@@ -1,6 +1,6 @@
 package app.dassana.ruleengine.web;
 
-import app.dassana.ruleengine.JsonPathParser;
+import app.dassana.ruleengine.JqPathParser;
 import app.dassana.ruleengine.RuleSetCompiler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
@@ -19,7 +19,7 @@ import org.json.JSONObject;
 public class RequestHandler extends
     MicronautRequestHandler<APIGatewayProxyRequestEvent, APIGatewayV2HTTPResponse> {
 
-  private final RuleSetCompiler ruleSetCompiler = new RuleSetCompiler(new JsonPathParser());
+  private final RuleSetCompiler ruleSetCompiler = new RuleSetCompiler(new JqPathParser());
 
 
   @Override

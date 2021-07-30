@@ -1,6 +1,7 @@
 package app.dassana.ruleengine.grammar;
 
 import app.dassana.ruleengine.grammar.specification.AbstractSpecification;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,8 +21,7 @@ public class RuleSet implements IRuleSet {
         this.rules.add(rule);
     }
 
-    public Boolean isSatisfiedBy(String jsonData)
-    {
+    public Boolean isSatisfiedBy(String jsonData) throws JsonProcessingException {
         boolean result = true;
         for(AbstractSpecification rule:rules)
             if (!rule.isSatisfiedBy(jsonData)) {
