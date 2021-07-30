@@ -11,20 +11,21 @@ public class RequestHandlerTest extends TestCase {
 
   public void testExecute() {
 
-    RequestHandler requestHandler=new RequestHandler();
+    RequestHandler requestHandler = new RequestHandler();
     APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent = new APIGatewayProxyRequestEvent();
-    Map<String,String> headers=new HashMap<>();
-    headers.put("x-dassana-check-type","grammar");
-    headers.put("x-dassana-rule","$.x contains foo");
+    Map<String, String> headers = new HashMap<>();
+    headers.put("x-dassana-check-type", "grammar");
+    headers.put("x-dassana-rule", ".status is approved");
     apiGatewayProxyRequestEvent.setHeaders(headers);
     APIGatewayV2HTTPResponse apiGatewayV2HTTPResponse = requestHandler.execute(apiGatewayProxyRequestEvent);
     String body = apiGatewayV2HTTPResponse.getBody();
-    Assert.assertEquals("(rule_set (single_rule (logical_expr (json_path_condition (json_path $. x) (operator "
-        + "(string_operators contains)) (comparison_value foo)))) <EOF>)",body);
+    Assert.assertEquals(
+        "(rule_set (single_rule (logical_expr (jq_path_condition (jq_path .status) (string_operators is) (string_comparison_value approved)))) <EOF>)",
+        body);
 
     headers.put("x-dassana-rule","$x");
     APIGatewayV2HTTPResponse badResponse = requestHandler.execute(apiGatewayProxyRequestEvent);
-    Assert.assertEquals(400,badResponse.getStatusCode());
+    Assert.assertEquals(400, badResponse.getStatusCode());
 
   }
 

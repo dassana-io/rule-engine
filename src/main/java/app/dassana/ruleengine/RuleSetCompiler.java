@@ -14,9 +14,9 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class RuleSetCompiler implements IRuleSetCompiler {
 
-  protected IJsonPathParser jsonPathParser;
+  protected IJqPathParser jsonPathParser;
 
-  public RuleSetCompiler(IJsonPathParser jsonPathParser) {
+  public RuleSetCompiler(IJqPathParser jsonPathParser) {
     this.jsonPathParser = jsonPathParser;
   }
 

@@ -21,6 +21,7 @@
   "landUseCodes": "GH,GX",
   "status": "approved",
   "organic": false,
+  "trueKey": true,
   "array": [
     {
       "ProductFields": {
