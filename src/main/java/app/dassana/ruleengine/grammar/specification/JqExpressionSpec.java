@@ -2,6 +2,7 @@ package app.dassana.ruleengine.grammar.specification;
 
 import app.dassana.ruleengine.IJqPathParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.micronaut.core.util.StringUtils;
 
 public class JqExpressionSpec extends AbstractSpecification {
 
@@ -15,6 +16,7 @@ public class JqExpressionSpec extends AbstractSpecification {
 
   @Override
   public boolean isSatisfiedBy(String jsonData) throws JsonProcessingException {
+
 
     return jsonPathParser.query(jsonData, expression).asBoolean();
   }

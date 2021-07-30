@@ -1,4 +1,5 @@
 {
+  "csp": "aws",
   "nullValue": null,
   "names": [
     "foo",
