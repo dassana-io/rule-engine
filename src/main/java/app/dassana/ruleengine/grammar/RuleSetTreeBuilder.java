@@ -6,6 +6,7 @@ import app.dassana.ruleengine.grammar.specification.AndSpecification;
 import app.dassana.ruleengine.grammar.specification.DoesNotExistsSpecification;
 import app.dassana.ruleengine.grammar.specification.EmptySpecification;
 import app.dassana.ruleengine.grammar.specification.ExistsSpecification;
+import app.dassana.ruleengine.grammar.specification.JqExpressionSpec;
 import app.dassana.ruleengine.grammar.specification.NotSpecification;
 import app.dassana.ruleengine.grammar.specification.OrSpecification;
 import app.dassana.ruleengine.grammar.specification.bool.IsTrue;
@@ -20,6 +21,7 @@ import app.dassana.rules.RuleSetParser.DoesNotExistOperatorContext;
 import app.dassana.rules.RuleSetParser.EmptyOperatorContext;
 import app.dassana.rules.RuleSetParser.ExistsOperatorContext;
 import app.dassana.rules.RuleSetParser.GenericOperationsContext;
+import app.dassana.rules.RuleSetParser.JqOperationContext;
 import app.dassana.rules.RuleSetParser.LogicalExpressionNotContext;
 import app.dassana.rules.RuleSetParser.NumberGreaterThanOperatorContext;
 import app.dassana.rules.RuleSetParser.NumberOperationsContext;
@@ -89,6 +91,12 @@ public class RuleSetTreeBuilder extends RuleSetBaseListener {
     NotSpecification notSpecification = new NotSpecification(null, null, null);
     notSpecification.setSpecification(pop);
     this.specifications.push(notSpecification);
+  }
+
+  @Override
+  public void exitJqOperation(JqOperationContext ctx) {
+    String path = ctx.getChild(0).getText();
+    this.specifications.push(new JqExpressionSpec(jqPathParser, path, null));
   }
 
   @Override

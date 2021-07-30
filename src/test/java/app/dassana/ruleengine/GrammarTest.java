@@ -36,6 +36,8 @@ public class GrammarTest {
   @Parameterized.Parameters
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][]{
+        {true, "\".organic == false\"", true},
+        {true, "\".organic == true\"", false},
         {true, ".status is approved", true},
         {true, ".status contains app", true},
         {true, ".status contains foo", false},

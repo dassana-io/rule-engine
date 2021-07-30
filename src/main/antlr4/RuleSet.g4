@@ -20,7 +20,7 @@ logical_expr : LPAREN logical_expr RPAREN      # ParenExpression
              | jq_path_condition            # JQPathConditionExpression
              ;
 
-jq_path_condition: jq_path                            # JqOperation
+jq_path_condition: STRING                            # JqOperation
                    |jq_path generic_operators         #  GenericOperations
                    | jq_path string_operators string_comparison_value #  StringOperations
                    | jq_path number_operators number_comparision_value # NumberOperations
@@ -47,7 +47,7 @@ string_operators: 'contains' #StringContainsExpression
                 | 'is'       #StringEqualsOperator
                 ;
 
-jq_path :  IDENTIFIER|'$.'IDENTIFIER| STRING ;
+jq_path :  IDENTIFIER| STRING ;
 
 STRING : '"' ( '\\"' | . )*? '"'
         {setText(getText().substring(1, getText().length()-1));}
