@@ -32,6 +32,7 @@ import app.dassana.rules.RuleSetParser.StringOperationsContext;
 import java.util.Stack;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
+import org.apache.commons.text.StringEscapeUtils;
 
 public class RuleSetTreeBuilder extends RuleSetBaseListener {
 
@@ -96,7 +97,8 @@ public class RuleSetTreeBuilder extends RuleSetBaseListener {
   @Override
   public void exitJqOperation(JqOperationContext ctx) {
     String path = ctx.getChild(0).getText();
-    this.specifications.push(new JqExpressionSpec(jqPathParser, path, null));
+    String unescapeJava = StringEscapeUtils.unescapeJava(path);
+    this.specifications.push(new JqExpressionSpec(jqPathParser, unescapeJava, null));
   }
 
   @Override
