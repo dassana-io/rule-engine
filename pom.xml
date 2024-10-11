@@ -76,7 +76,7 @@
     <dependency>
       <groupId>net.thisptr</groupId>
       <artifactId>jackson-jq</artifactId>
-      <version>1.0.0-preview.20210610</version>
+      <version>1.0.1</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
